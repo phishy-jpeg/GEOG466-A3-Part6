@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crossing Indigenous Lands: Mission and Empire in the Rockies, 1811–1858</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+:root{--bg:#f3efe6;--ink:#23201b;--mute:#645d51;--card:#fbf9f3;--rule:#d6cdb8;--trade:#1f6f8b;--rel:#7b3fa0;--emp:#b3412e}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1a17;--ink:#ece6d8;--mute:#aaa393;--card:#25231f;--rule:#3d392f;--trade:#6cc3de;--rel:#c9a0e6;--emp:#f08a76}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Georgia,"Iowan Old Style",serif}
+header{max-width:1240px;margin:0 auto;padding:24px 20px 8px}
+h1{font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.15;margin:0 0 6px}
+.sub{color:var(--mute);margin:0;max-width:75ch}
+main{max-width:1240px;margin:0 auto;padding:12px 20px 24px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+#map{height:min(78vh,720px);min-height:420px;border:1px solid var(--rule);position:sticky;top:8px}
+@media (max-width:900px){#map{position:relative}}
+.cards{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--card);border:1px solid var(--rule);border-left:6px solid var(--c);padding:12px 14px;cursor:pointer}
+.card:focus-visible{outline:3px solid var(--ink)}
+.card h2{font-size:1.1rem;margin:0}.who{font-size:.85rem;color:var(--mute);margin:2px 0 8px}
+.card p{margin:6px 0}.ind{font-size:.92rem;border-top:1px solid var(--rule);padding-top:8px}
+figure{margin:8px 0}figure img{width:100%;max-height:230px;object-fit:cover;display:block;background:var(--rule)}
+figcaption{font-size:.78rem;color:var(--mute);margin-top:3px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{font:.78rem "Gill Sans","Trebuchet MS",sans-serif;border:1px solid var(--c);padding:1px 8px;border-radius:20px}
+.note{border:1px solid var(--rule);background:var(--card);padding:12px 14px;font-size:.93rem}.note h2{font-size:1.05rem;margin:0 0 4px}
+.src{max-width:1240px;margin:0 auto;padding:0 20px 28px;font-size:.82rem;color:var(--mute)}.src a{color:inherit}
+.pin{width:26px;height:26px;color:#fff;font:700 13px/26px "Gill Sans",sans-serif;text-align:center;border:2px solid #fff;box-shadow:0 0 3px #000}
+.pin.t{background:#1f6f8b;border-radius:50%}.pin.r{background:#7b3fa0}.pin.e{background:#b3412e;transform:rotate(45deg)}.pin.e span{display:block;transform:rotate(-45deg)}
+.leg{background:rgba(255,255,255,.93);color:#23201b;padding:8px 10px;font:12px/1.5 "Gill Sans","Trebuchet MS",sans-serif;border-radius:4px;box-shadow:0 0 6px rgba(0,0,0,.3)}
+.leg b{display:block;margin-bottom:2px}.leg i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.pop{width:230px;font:13px/1.4 Georgia,serif}.pop img{width:100%;display:block}.pop small{color:#555}
+</style>
+</head>
+<body>
+<header>
+<h1>Crossing Indigenous Lands: Mission and Empire in the Rockies, 1811–1858</h1>
+<p class="sub">Five places where fur traders, missionaries and a British survey party travelled through country long known to Indigenous peoples. Switch the basemap (top right) to see elevation as contours and shaded relief. Select a marker or card to explore.</p>
+</header>
+<main>
+<div id="map" role="application" aria-label="Topographic map of five locations in the Canadian Rockies"></div>
+<div class="cards" id="cards">
+<div class="note"><h2>Reading the source critically</h2>The source text calls the Rockies an “unknown country” and a “primeval” wilderness. They were unknown only to outsiders: Indigenous guides led nearly every journey mapped here, and the trails followed were already Indigenous routes. The mission, treaty and railway changes that followed are part of this map’s story.</div>
+</div>
+</main>
+<p class="src"><b>Source of the story:</b> Lothian, W. F., <em>A History of Canada’s National Parks</em>, vol. 1 (Parks Canada), excerpt available at <a href="http://parkscanadahistory.com/publications/history/lothian/eng/vol1.pdf">parkscanadahistory.com</a>. <b>Basemaps:</b> Esri World Topographic Map and World Shaded Relief (Esri, USGS, NOAA and contributors); OpenTopoMap (© OpenTopoMap, CC-BY-SA; data © OpenStreetMap contributors; SRTM). Projection: Web Mercator (the tile standard). Routes, the Continental Divide line and all coordinates except Athabasca Pass and Jasper House are approximate. Territorial notes are general; consult native-land.ca and the nations themselves. Images: Wikimedia Commons (see captions and file pages).</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const map=L.map('map').setView([52.0,-116.6],7);
+const esri=s=>L.tileLayer(`https://server.arcgisonline.com/ArcGIS/rest/services/${s}/MapServer/tile/{z}/{y}/{x}`,{maxZoom:13,attribution:'Esri, USGS, NOAA, and contributors'});
+const base={"Topographic (Esri): contours, hillshade, relief":esri('World_Topo_Map').addTo(map),
+"Shaded relief (Esri): elevation as light and shadow":esri('World_Shaded_Relief'),
+"Contour map (OpenTopoMap): elevation lines":L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:15,attribution:'© OpenTopoMap (CC-BY-SA), © OpenStreetMap contributors, SRTM'})};
+L.control.layers(base,null,{collapsed:false}).addTo(map);
+L.control.scale({metric:true,imperial:false,position:'bottomleft'}).addTo(map);
+const fp=f=>'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(f)+'?width=640';
+const pg=f=>'https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(f);
+const col={t:'#1f6f8b',r:'#7b3fa0',e:'#b3412e'};
+const locs=[
+{id:1,k:'t',name:'Athabasca Pass',ll:[52.3764,-118.1833],who:'David Thompson, January 1811',elev:'1,753 m',
+d:'Thompson of the North West Company crossed the pass, camping on twenty feet of snow. The crossing created the “Athabasca Trail,” used by fur brigades between the Pacific coast and Fort Edmonton until Yellowhead Pass offered an easier route.',
+i:'The route was shown to Thompson by an Iroquois guide named Thomas, a Haudenosaunee man working in the fur trade. Fur-trade commerce relied on Indigenous knowledge, labour and routes.',
+t:['Fur trade','Colonial commerce','Winter hardship','Exploration'],img:'Athabasca_Pass_sign.jpg',cap:'Athabasca Pass sign, Jasper National Park. Wikimedia Commons (author and licence: see file page).'},
+{id:2,k:'t',name:'Simpson Pass',ll:[51.07,-115.97],who:'Sir George Simpson, 1841',
+d:'Simpson, Governor of the Hudson’s Bay Company, followed Bow River and Healy Creek to the divide, guided by a Cree man. He believed he saw Scottish heather. Decades later a tree carved “GS-JR 1841” was found in the pass.',
+i:'Simpson followed an existing Indigenous trail past Devil’s Gap and around Lake Minnewanka. His “first documented” route followed paths already used by Cree, Stoney Nakoda and other peoples.',
+t:['Colonialism','Indigenous guides','Nostalgia','Alpine nature'],img:'BanffBeauty.jpg',cap:'Lake Minnewanka, Banff National Park, on Simpson’s 1841 route. Photo: IgorMatias3, Wikimedia Commons (licence: see file page).'},
+{id:3,k:'r',name:'Jasper House',ll:[53.1383,-117.9806],who:'Father Pierre de Smet, 1846',
+d:'The Jesuit missionary stopped for over three weeks on his return across the Rockies, baptizing and marrying local Indigenous people. He also fasted to prepare for the strenuous climb over Athabasca Pass.',
+i:'Missionary baptisms and marriages were an early step in the mission-led Christianization of the region. Later, residential schools and treaties reshaped Indigenous life across these lands.',
+t:['Religion','Missions','Trade post','Indigenous peoples'],img:'Kane_Jasper_House.jpg',cap:'Jasper’s House, field sketch by Paul Kane, 1846–47 (Stark Museum of Art). Public domain, via Wikimedia Commons. It shows the post’s log buildings among Indigenous lodges.'},
+{id:4,k:'r',name:'Cascade Mountain',ll:[51.2283,-115.5633],who:'Rev. Robert Rundle, 1847',elev:'2,998 m',
+d:'Rundle, a Methodist missionary guided by Indigenous companions, camped for several days at the foot of Cascade Mountain, the future site of Banff, and recorded the visit in his journal.',
+i:'Banff lies in Treaty 7 territory. The Stoney Nakoda, Siksika, Piikani, Kainai and Tsuut’ina all have ties to this valley. Banff National Park (1885) later restricted their access.',
+t:['Religion','Missionary travel','Indigenous guides','Wilderness'],img:'Cloud-Covered_Cascade_Mountain_--_Banff,_Alberta_(CA)_September_2019_(49558510098).jpg',cap:'Cloud-covered Cascade Mountain, Banff, September 2019. Photo: Ron Cogswell, via Wikimedia Commons (licence: see file page).'},
+{id:5,k:'e',name:'Kananaskis Pass',ll:[50.6,-115.28],who:'Captain John Palliser, 1858',
+d:'Palliser’s British-sponsored expedition crossed here to the Kootenay River. It assessed the region for settlement and a railway route to the Pacific, partly in response to American surveys.',
+i:'The survey assessed Indigenous homelands as “opportunities for settlement.” Its findings fed into the later treaties and the railway era that transformed the plains and mountains.',
+t:['Empire','Science','Settlement','Railway ambitions'],img:'John_Palliser.jpg',cap:'Portrait of John Palliser, leader of the expedition. Public domain, via Wikimedia Commons.'}];
+// Continental Divide (approx.) and schematic routes
+L.polyline([[49,-114.07],[49.6,-114.68],[50.1,-114.95],[50.6,-115.3],[51.07,-115.97],[51.4,-116.2],[51.9,-116.8],[52.2,-117.4],[52.38,-118.18],[52.9,-118.46],[53.2,-119.2],[53.5,-120]],{color:'#7a4b2a',weight:3,dashArray:'8 4 2 4'}).addTo(map).bindTooltip('Continental Divide / Alberta–BC border (approx.)',{sticky:true});
+[[col.t,[[53.1383,-117.9806],[52.75,-118.1],[52.3764,-118.1833]],'Thompson, 1810–11 (schematic)'],[col.t,[[51.18,-115.57],[51.12,-115.8],[51.07,-115.97]],'Simpson, 1841 (schematic)'],[col.r,[[52.3764,-118.1833],[52.75,-118.1],[53.1383,-117.9806]],'de Smet, 1846 (schematic)'],[col.r,[[51.1,-114.3],[51.15,-114.9],[51.2283,-115.5633]],'Rundle, 1847 (schematic)'],[col.e,[[51.1,-114.4],[50.85,-114.95],[50.6,-115.28]],'Palliser, 1858 (schematic)']]
+.forEach(([c,p,t])=>L.polyline(p,{color:c,weight:3,dashArray:'6 5'}).addTo(map).bindTooltip(t,{sticky:true}));
+L.marker([51.178,-115.571],{icon:L.divIcon({className:'',html:'<div style="width:8px;height:8px;background:#000;border:1px solid #fff"></div>',iconSize:[8,8]})}).addTo(map).bindTooltip('Banff');
+const mk={},cards=document.getElementById('cards');
+const fig=o=>`<figure><img src="${fp(o.img)}" alt="${o.name}" loading="lazy" onerror="this.style.display='none'"><figcaption>${o.cap} <a href="${pg(o.img)}" target="_blank" rel="noopener">File page</a></figcaption></figure>`;
+locs.forEach(o=>{
+const m=L.marker(o.ll,{icon:L.divIcon({className:'',html:`<div class="pin ${o.k}"><span>${o.id}</span></div>`,iconSize:[26,26],iconAnchor:[13,13]}),title:o.name}).addTo(map);
+m.bindPopup(`<div class="pop"><b>${o.id}. ${o.name}</b><br><small>${o.who}${o.elev?' · elevation '+o.elev:''}</small><br><img src="${fp(o.img)}" alt="${o.name}" onerror="this.style.display='none'"><small>${o.cap}</small></div>`,{maxWidth:250});
+mk[o.id]=m;
+cards.insertAdjacentHTML('beforeend',`<article class="card" tabindex="0" data-id="${o.id}" style="--c:${col[o.k]}"><h2>${o.id}. ${o.name}</h2><div class="who">${o.who}${o.elev?' · elevation '+o.elev:''}</div><p>${o.d}</p>${fig(o)}<p class="ind"><b>Indigenous context:</b> ${o.i}</p><div class="chips">${o.t.map(t=>`<span>${t}</span>`).join('')}</div></article>`)});
+const go=id=>{const o=locs.find(x=>x.id==id);map.flyTo(o.ll,9,{duration:.8});mk[id].openPopup()};
+cards.addEventListener('click',e=>{const c=e.target.closest('.card');if(c&&!e.target.closest('a'))go(c.dataset.id)});
+cards.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.dataset.id)go(e.target.dataset.id)});
+map.fitBounds([[50.3,-119],[53.4,-114.4]]);
+// legend + north arrow + title
+const lg=L.control({position:'bottomright'});lg.onAdd=()=>{const d=L.DomUtil.create('div','leg');d.innerHTML=`<b>Legend</b><i style="background:${col.t};border-radius:50%"></i>Fur trade and exploration<br><i style="background:${col.r}"></i>Religion and missions<br><i style="background:${col.e};transform:rotate(45deg)"></i>Empire and science<br><i style="border-top:3px dashed #555;height:0;margin-top:5px"></i>Route (schematic)<br><i style="border-top:3px dashed #7a4b2a;height:0;margin-top:5px"></i>Continental Divide`;return d};lg.addTo(map);
+const na=L.control({position:'topleft'});na.onAdd=()=>{const d=L.DomUtil.create('div','leg');d.style.textAlign='center';d.innerHTML='<b style="margin:0">▲</b>N';return d};na.addTo(map);
+</script>
+</body>
+</html>
